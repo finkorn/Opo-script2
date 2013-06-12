@@ -105,7 +105,7 @@ for(var i=0,l=texts.snapshotLength; (this_text=texts.snapshotItem(i)); i++) {
 
 var mentioned = false;
 var clicked = false;
-var skipped = false;
+var skipped = true;
 var predictor = false;
 var hostlingInRoom = false;
 var timeToWait = 600000;
