@@ -64,13 +64,16 @@ function onCookiesLoaded() {
 }
 
 var words = {
-	"Points" : "Beats!",
-	"Now Playing" : "Now Spinning!",
-	"Time Remaining" : "Time Remaining!",
-	"Volume" : "Crank the Volume!",
-	"Current DJ" : "Disk Jockey",
-	"Crowd Response" : "Crowd Reaction!",
-	"Fans":"Stalkers!"
+	"Points" : "Body!",
+        "Now Playing" : "Nyní hraje!",
+        "Time Remaining" : "Zbývající čas!",
+        "Volume" : "Hlasitost!",
+        "Current DJ" : "Aktuální DJ",
+        "Crowd Response" : "Hodnocení!",
+        "INFO" : "Informace!",
+        "USERS" : "Uživatelé!",
+        "HISTORY" : "Historie!",
+        "Fans":"Fanoušci!"
 };
 
 String.prototype.prepareRegex = function() {
