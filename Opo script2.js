@@ -127,19 +127,19 @@ var COOKIE_LEFT = 'left';
 var MAX_USERS_WAITLIST = 50;
 
 var fbMsg = [""];
-var rulesMsg = "/me Rules: 1) No spamming 2) No posting lewd content (pictures/videos/doujins) ect. 4) No songs over 7 minutes unless under certain conditions (A featured artist playing a mix.) 4) Please speak English. 5) EDM only.";
-var skipMsg = ["Please do not ask to skip songs.", "Asking to skip songs can lead to being kicked!"];
-var fansMsg = ["Please do not ask for fans", "Earn your fans like the rest of us"];
-var wafflesMsg = ["WAFFLES FOR EVERYONE!! #-(>_<)-#", "did somebody say WAFFLES? #-(>_<)-#", "cheese ca- I mean WAFFLES TIME! #-(>_<)-#", "do you know what it is time for? WAFFLES #-(>_<)-#"];
-var bhvMsg = ["please be appropriate in the chat", "please do not talk like that, control yourself!",  "please be mature in the chat guys"];
-var sleepMsg = ["Cya later guys, i am out for today!", "Going to sleep now.", "Bed time!", "tiredness... taking... over... must sleep"];
-var workMsg = ["I'm working so mention me if I'm needed", "I'm going to be busy for a while, mention if needed"];
-var afkMsg = ["Stepping away for a moment", "Going AFK for a while, be back soon!"];
-var backMsg = ["I have returned", "I'm baaacckkk"];
+var rulesMsg = "/me Rules: 1) Nespamovat 2) nezvěřejňovat jiné místnosti 3) songy max. 8min! 4) nenadávat! 5) neopakovat songy!";
+var skipMsg = ["..."];
+var fansMsg = ["..."];
+var wafflesMsg = ["..."];
+var bhvMsg = ["..."];
+var sleepMsg = ["Čas spát!!!", "Jdu spát!!", "čas zalehnout!", "jsem unavený, jdu se vyspat!", "Postel čeká!!"];
+var workMsg = ["jde se pracovat!!", "Práce volá!", "Jsem zaneprázdněn!!"];
+var afkMsg = ["Odjíždím pryč uvidíme se později!", "Jdu pryč!", "Jdu pryč, uvidíme se později!", "Nepište, nejsem tu!!!"];
+var backMsg = ["Sem zpět!", "Sem z5", "Hádejte, kdo je zpátky? Já!", "Konečně jsem tu!"];
 
-var autoAwayMsg = ["I'm currently AFK", "I'm AFK", "I'm on an adventure (afk)", "gone away for a moment", "not present at keyboard"];
-var autoSlpMsg = ["I'm currently sleeping", "I'm counting sheep in my dreams", "I've hit the sack", "I'm asleep", "I've gone to sleep"];
-var autoWrkMsg = ["I'm currently working", "I'm busy", "I shall get back to you when i can."];
+var autoAwayMsg = ["Jsem AFK", "jsem zaneprázdněn!", "Jsem pryč!!", "čekejte chvíly!", "Nejsem přítomnej u klávesnice!"];
+var autoSlpMsg = ["Spím!!", "Snim!!", "Zalehnul jsem", "V posteli!", "Jdu spát"];
+var autoWrkMsg = ["Pracuju", "Nestíhám!", "Snažim se pracovat!!"];
 
 var styles = [
            '.sidebar {position: fixed; top: 0; height: 100%; width: 200px; z-index: 99999; background-image: linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -o-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -moz-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -webkit-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -ms-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #000000),color-stop(1, #3B5678));}',
