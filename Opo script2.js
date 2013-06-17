@@ -832,8 +832,8 @@ function chatListener() {
 
 delay();
 $('#plugbot-js').remove();
-log("Also, welcome to ★Anime Games Music★, coded by Nitro Ghost. Version: 4.1.4");
-log("type '/commands' to see extra commands");
+log("Vítejte v Opolanech!!!");
+log("'/commands' (příkazy)  ");
 $('body').prepend('<script type="text/javascript" id="autoskip-js" src="https://raw.github.com/Snipeglider/Plug/master/autoskip.js" />');
 $('body').prepend('<script type="text/javascript" id="blacklist-js" src="https://raw.github.com/Snipeglider/Plug/master/blacklist.js" />');
 $('body').prepend('<script type="text/javascript" id="modcommands-js" src="https://raw.github.com/Snipeglider/Plug/master/modcommands.js" />');
