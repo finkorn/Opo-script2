@@ -64,13 +64,16 @@ function onCookiesLoaded() {
 }
 
 var words = {
-"Points" : "Beats!",
-"Now Playing" : "Now Spinning!",
-"Time Remaining" : "Time Remaining!",
-"Volume" : "Crank the Volume!",
-"Current DJ" : "Disk Jockey",
-"Crowd Response" : "Crowd Reaction!",
-"Fans":"Stalkers!"};
+"Points" : "Body!",
+"Now Playing" : "Nyní hraje!",
+"Time Remaining" : "zbývající čas!",
+"Volume" : "Hlasitost!",
+"Current DJ" : "Hraje",
+"Crowd Response" : "Hodnocení!",
+"Info" : "Informace!",
+"Users" : "Uživatelé!",
+"History" : "Historie!",
+"Fans":"Fanoušci!"};
 
 String.prototype.prepareRegex = function() {
 return this.replace(/([\[\]\^\&\$\.\(\)\?\/\\\+\{\}\|])/g, "\\$1");
@@ -372,7 +375,7 @@ function initUIListeners() {
 			}
 		}
 	});
-	$("#plug-btn-skip").on("click", function() {
+	$("#plug-btn-Přeskočit").on("click", function() {
 		if (skipped == false) {
 			skipped = true;
 			skipTimer = setInterval("checkSkipped();", 500);
