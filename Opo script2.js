@@ -1,7 +1,7 @@
 function delay() {
-    setTimeout("load();", 6000);
-  setTimeout(function(){RoomUser.audience.roomElements = []; RoomUser.redraw();}, 4000);
-	setTimeout("chatListener();", 10000);
+	setTimeout("load();", 6000);
+	setTimeout(function(){RoomUser.audience.roomElements = []; RoomUser.redraw();}, 4000);
+	setTimeout("chatListener()", 10000);
 }
 
 function load() {
@@ -49,7 +49,7 @@ function onCookiesLoaded() {
 		$('#playback .frame-background').animate({'opacity': (hideVideo ? '0' : '0.91')}, {duration: 'medium'});
 	}
 	if (left) {
-		$(".sidebar#side-left").animate({"left": left ? "0px" : "-220px"}, 300, "easeOutCirc");
+		$(".sidebar#side-left").animate({"left": left ? "0px" : "-190px"}, 300, "easeOutCirc");
 	}
 	if (!emotes) Emoji.emojify = function(data) {
 		return data;
@@ -64,50 +64,45 @@ function onCookiesLoaded() {
 }
 
 var words = {
-	"Points" : "Body!",
-        "Now Playing" : "Nyní hraje!",
-        "Time Remaining" : "Zbývající čas!",
-        "Volume" : "Hlasitost!",
-        "Current DJ" : "Aktuální DJ",
-        "Crowd Response" : "Hodnocení!",
-        "INFO" : "Informace!",
-        "USERS" : "Uživatelé!",
-        "HISTORY" : "Historie!",
-        "Fans":"Fanoušci!"
-};
+"Points" : "Beats!",
+"Now Playing" : "Now Spinning!",
+"Time Remaining" : "Time Remaining!",
+"Volume" : "Crank the Volume!",
+"Current DJ" : "Disk Jockey",
+"Crowd Response" : "Crowd Reaction!",
+"Fans":"Stalkers!"};
 
 String.prototype.prepareRegex = function() {
-	return this.replace(/([\[\]\^\&\$\.\(\)\?\/\\\+\{\}\|])/g, "\\$1");
+return this.replace(/([\[\]\^\&\$\.\(\)\?\/\\\+\{\}\|])/g, "\\$1");
 };
 
 function isOkTag(tag) {
-	return (",pre,blockquote,code,input,button,textarea".indexOf(","+tag) == -1);
+return (",pre,blockquote,code,input,button,textarea".indexOf(","+tag) == -1);
 }
 
-var regexs = new Array(),
-replacements = new Array();
+var regexs=new Array(),
+    replacements=new Array();
 for(var word in words) {
-	if(word != "") {
-		regexs.push(new RegExp("\\b"+word.prepareRegex().replace(/\*/g,'[^ ]*')+"\\b", 'gi'));
-		replacements.push(words[word]);
-	}
+if(word != "") {
+regexs.push(new RegExp("\\b"+word.prepareRegex().replace(/\*/g,'[^ ]*')+"\\b", 'gi'));
+replacements.push(words[word]);
+}
 }
 
 var texts = document.evaluate(".//text()[normalize-space(.)!='']",document.body,null,6,null), text="";
 for(var i=0,l=texts.snapshotLength; (this_text=texts.snapshotItem(i)); i++) {
 	if(isOkTag(this_text.parentNode.tagName.toLowerCase()) && (text=this_text.textContent)) {
-		for(var x=0,l=regexs.length; x<l; x++) {
-		text = text.replace(regexs[x], replacements[x]);
-		this_text.textContent = text;
-		}
+	for(var x=0,l=regexs.length; x<l; x++) {
+	text = text.replace(regexs[x], replacements[x]);
+	this_text.textContent = text;
+	}
 	}
 }
 
 var mentioned = false;
 var clicked = false;
-var skipped = true;
+var skipped = false;
 var predictor = false;
-var hostlingInRoom = false;
 var timeToWait = 600000;
 var clickWait = 5000;
 var skipWait = 2000;
@@ -128,32 +123,29 @@ var COOKIE_AUDIENCE = 'audience';
 var COOKIE_LEFT = 'left';
 var MAX_USERS_WAITLIST = 50;
 
-var fbMsg = ["/me like our facebook page! http://bit.ly/DTandE-FB and/or join us on our forums at http://bit.ly/dteforms", "/me check out our facebook page at http://bit.ly/DTandE-FB and/or join us on our forums at http://bit.ly/dteforms", "/me drop us a like on our facebook page http://bit.ly/DTandE-FB and/or join us on our forums at http://bit.ly/dteforms", "/me like our fb page or die! just kidding http://bit.ly/DTandE-FB and/or join us on our forums at http://bit.ly/dteforms"];
-var rulesMsg = "Rules: 1) for all ages so no porn 2) no songs over 8 mins 3) spamming can lead to an instant ban 4) please keep songs to EDM 5) have fun!";
-var skipMsg = ["please do not ask to skip songs", "asking to skip songs can lead to being kicked", "please please PLEASE don't ask to skip songs D:"];
-var fansMsg = ["please do not ask for fans", "earn your fans!!!", "earn your fans like the rest of us", "the number of fans you have means nothing anyway, so don't ask for them!"];
+var fbMsg = [""];
+var rulesMsg = "/me Rules: 1) No spamming 2) No posting lewd content (pictures/videos/doujins) ect. 4) No songs over 7 minutes unless under certain conditions (A featured artist playing a mix.) 4) Please speak English. 5) EDM only.";
+var skipMsg = ["Please do not ask to skip songs.", "Asking to skip songs can lead to being kicked!"];
+var fansMsg = ["Please do not ask for fans", "Earn your fans like the rest of us"];
 var wafflesMsg = ["WAFFLES FOR EVERYONE!! #-(>_<)-#", "did somebody say WAFFLES? #-(>_<)-#", "cheese ca- I mean WAFFLES TIME! #-(>_<)-#", "do you know what it is time for? WAFFLES #-(>_<)-#"];
 var bhvMsg = ["please be appropriate in the chat", "please do not talk like that, control yourself!",  "please be mature in the chat guys"];
-var sleepMsg = ["Sleepy time!!!", "going to sleep now", "time to hit the sack", "so tired, sleep is needed me thinks", "tiredness... taking... over... must sleep"];
-var workMsg = ["I'm working so mention me if I'm needed", "I'm going to do work related stuffs, mention if needed", "I'm gonna be busy, mention if needed"];
-var afkMsg = ["I'm going away on a merry merry quest, be back soon!", "going AFK for a while, be back soon!", "going away, be back soon!", "going to hunt the galaxy, be back soon!"];
-var backMsg = ["I'm back from my adventures!", "I'm baaacckkk", "guess who's back? ME! I'm back :D", "be-ber-ber-b-be-back!"];
-var spamMsg = ["please get rid of your autowoot, it spams the chat", "your autowoot is no good, it spams the chat without you knowing and would be best to remove it", "if you do not remove your spammy autowoot you will be kicked", "your autowoot is no good, remove it or you will leave the room", "Luke! I am your father, and I say remove your autowoot because it is spammy, or perish in the fires of the darkside"];
+var sleepMsg = ["Cya later guys, i am out for today!", "Going to sleep now.", "Bed time!", "tiredness... taking... over... must sleep"];
+var workMsg = ["I'm working so mention me if I'm needed", "I'm going to be busy for a while, mention if needed"];
+var afkMsg = ["Stepping away for a moment", "Going AFK for a while, be back soon!"];
+var backMsg = ["I have returned", "I'm baaacckkk"];
 
 var autoAwayMsg = ["I'm currently AFK", "I'm AFK", "I'm on an adventure (afk)", "gone away for a moment", "not present at keyboard"];
 var autoSlpMsg = ["I'm currently sleeping", "I'm counting sheep in my dreams", "I've hit the sack", "I'm asleep", "I've gone to sleep"];
-var autoWrkMsg = ["I'm currently working", "I'm busy", "doing work related stuffs"];
-
-hostling = ["50e4f10ec3b97a3ce3aa6579"];
+var autoWrkMsg = ["I'm currently working", "I'm busy", "I shall get back to you when i can."];
 
 var styles = [
-            '.sidebar {position: fixed; top: 0; height: 100%; width: 240px; z-index: 99999; background-image: linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -o-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -moz-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -webkit-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -ms-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #000000),color-stop(1, #3B5678));}',
-            '.sidebar#side-right {right: -220px; z-index: 99999;}',
-            '.sidebar#side-left {left: -220px; z-index: 99999; }',
-            '.sidebar-handle {width:20px;height: 100%;z-index: 99999;margin: 0;padding: 0;background: rgb(96, 141, 197);box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .9);cursor: "ne-resize";}',
-            '.sidebar-handle span {display: block;position: absolute;width: 20px; top: 50%;text-align: center;letter-spacing: -1px;color: #000;}',
-            '.sidebar-content {position: absolute;width: 215px; height: 100%; padding-left: 25px}',
-            '.sidebar-content2 {position: absolute;width: 215px; height: 100%; overflow: auto}',
+            '.sidebar {position: fixed; top: 0; height: 100%; width: 200px; z-index: 99999; background-image: linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -o-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -moz-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -webkit-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -ms-linear-gradient(bottom, #000000 0%, #3B5678 100%);background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #000000),color-stop(1, #3B5678));}',
+            '.sidebar#side-right {right: -190px;z-index: 99999;}',
+            '.sidebar#side-left {left: -190px; z-index: 99999; }',
+            '.sidebar-handle {width: 12px;height: 100%;z-index: 99999;margin: 0;padding: 0;background: rgb(96, 141, 197);box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .9);cursor: "ne-resize";}',
+            '.sidebar-handle span {display: block;position: absolute;width: 10px;top: 50%;text-align: center;letter-spacing: -1px;color: #000;}',
+            '.sidebar-content {position: absolute;width: 185px;height: 100%; padding-left: 15px}',
+            '.sidebar-content2 {position: absolute;width: 185px;height: 100%; overflow: auto}',
             '.sidebar-content2 h3 {font-weight: bold; padding-left: 5px; padding-bottom: 5px; margin: 0;}',
             '.sidebar-content2 a {font-weight: bold; font-size: 13px; padding-left: 5px;}',
             '#side-right .sidebar-handle {float: left;}',
@@ -164,13 +156,11 @@ var styles = [
             '#side-right a:hover {background-color: rgba(97, 146, 199, 0.65);text-decoration: none;}',
             '.sidebar-content2 span:hover {background-color: rgba(97, 146, 199, 0.65);text-decoration: none;}',
             '.sidebar-content2 a:hover {text-decoration: none;}',
-            'html{background: url(http://i.imgur.com/05Nso7J.jpg) no-repeat scroll center top #000000;}',
-            '#room-wheel {z-index: 2;position: absolute;top: 2px;left: 0;width: 1044px;height: 394px;background: url(http://) no-repeat;display: none;}',
             '.chat-bouncer {background: url(http://i.imgur.com/9qWWO4L.png) no-repeat 0 5px;padding-left: 17px;width: 292px;}',
             '.chat-manager {background: url(http://i.imgur.com/hqqhTcp.png) no-repeat 0 5px;padding-left: 17px;width: 292px;}',
             '.chat-cohost {background: url(http://i.imgur.com/njajqVG.png) no-repeat 0 5px;padding-left: 17px;width:292px;}',
             '.chat-host {background: url(http://i.imgur.com/njajqVG.png) no-repeat 0 5px;padding-left: 17px;width: 292px;}',
-            '#dj-console, #dj-console {background-image: url(http://i.imgur.com/SzjUPtj.gif);min-height:33px;min-width:131px;}',
+            '#dj-console, #dj-console {background-image: url(http://i.imgur.com/gqdMdaz.gif);min-height:33px;min-width:131px;}',
             '.chat-from-you {color: #0099FF;font-weight: bold;margin-top: 0px; padding-top: 0px;}',
             '.chat-from-featureddj {color: rgb(255, 0, 135); font-weight: bold; margin-top: 0px; padding-top: 0px;}',
             '.chat-from-bouncer {color: rgb(199, 0, 199); font-weight: bold; margin-top: 0px; padding-top: 0px;}',
@@ -184,10 +174,10 @@ var styles = [
             '#volume-bar-value {background-image: url(http://i.imgur.com/xmyonON.png) ;}',
             '.chat-message:nth-child(2n), .chat-mention:nth-child(2n), .chat-skip:nth-child(2n), .chat-moderation:nth-child(2n), .chat-emote:nth-child(2n), .chat-update:nth-child(2n) {background-color: rgba(26, 26, 26, 0.65);}',
             '.frame-background {background-color: rgba(0, 0, 0, 0.8);}',
-            '#hr-div {height: 100%; width: 100%; margin: 0; padding-left: 20px;}',
+            '#hr-div {height: 100%; width: 100%;margin: 0;padding-left: 12px;}',
             '#hr2-div2 {height: 100%; width: 100%;margin: 0;}',
             '#hr-style {position: absolute;display: block;height: 20px;width: 100%;bottom: 0%;background-image: url(http://i.imgur.com/jQhf3BW.png);}',
-            '#hr2-style2 {position: absolute;display: block;height: 20px;width: 90%%;bottom: 0%;background-image: url(http://i.imgur.com/jQhf3BW.png);}',
+            '#hr2-style2 {position: absolute;display: block;height: 20px;width: 94%%;bottom: 0%;background-image: url(http://i.imgur.com/jQhf3BW.png);}',
             '#side-left h3 {padding-left: 5px}',
             '::-webkit-scrollbar {height: 6px; width: 6px;}',
             '::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); -webkit-border-radius: 6px;border-radius: 6px;}',
@@ -198,7 +188,7 @@ var styles = [
 var scripts = [
             '(function(e){e.fn.hoverIntent=function(t,n,r){var i={interval:100,sensitivity:7,timeout:0};if(typeof t==="object"){i=e.extend(i,t)}else if(e.isFunction(n)){i=e.extend(i,{over:t,out:n,selector:r})}else{i=e.extend(i,{over:t,out:t,selector:n})}var s,o,u,a;var f=function(e){s=e.pageX;o=e.pageY};var l=function(t,n){n.hoverIntent_t=clearTimeout(n.hoverIntent_t);if(Math.abs(u-s)+Math.abs(a-o)<i.sensitivity){e(n).off("mousemove.hoverIntent",f);n.hoverIntent_s=1;return i.over.apply(n,[t])}else{u=s;a=o;n.hoverIntent_t=setTimeout(function(){l(t,n)},i.interval)}};var c=function(e,t){t.hoverIntent_t=clearTimeout(t.hoverIntent_t);t.hoverIntent_s=0;return i.out.apply(t,[e])};var h=function(t){var n=jQuery.extend({},t);var r=this;if(r.hoverIntent_t){r.hoverIntent_t=clearTimeout(r.hoverIntent_t)}if(t.type=="mouseenter"){u=n.pageX;a=n.pageY;e(r).on("mousemove.hoverIntent",f);if(r.hoverIntent_s!=1){r.hoverIntent_t=setTimeout(function(){l(n,r)},i.interval)}}else{e(r).off("mousemove.hoverIntent",f);if(r.hoverIntent_s==1){r.hoverIntent_t=setTimeout(function(){c(n,r)},i.timeout)}}};return this.on({"mouseenter.hoverIntent":h,"mouseleave.hoverIntent":h},i.selector)}})(jQuery)',
             'if (jQuery.easing.easeOutCirc === undefined) jQuery.easing.easeOutCirc = function(e,f,a,h,g){return h*Math.sqrt(1-(f=f/g-1)*f)+a}',
-            '$("#side-right").hoverIntent(function() {var timeout_r = $(this).data("timeout_r");if (timeout_r) {clearTimeout(timeout_r);}$(this).animate({"right": "0px"}, 300, "easeOutCirc");}, function() {$(this).data("timeout_r", setTimeout($.proxy(function() {$(this).animate({"right": "-220px"}, 300, "easeOutCirc");}, this), 500));});',
+            '$("#side-right").hoverIntent(function() {var timeout_r = $(this).data("timeout_r");if (timeout_r) {clearTimeout(timeout_r);}$(this).animate({"right": "0px"}, 500, "easeOutCirc");}, function() {$(this).data("timeout_r", setTimeout($.proxy(function() {$(this).animate({"right": "-190px"}, 500, "easeOutCirc");}, this), 500));});',
 ];
 
 function initAPIListeners() {
@@ -206,8 +196,6 @@ function initAPIListeners() {
   	API.addEventListener(API.CHAT, autoRespond);
   	API.addEventListener(API.DJ_UPDATE, queueUpdate);
   	API.addEventListener(API.ROOM_SCORE_UPDATE, roomSkip);
-  	API.addEventListener(API.USER_LEAVE, checkModding);
-  	API.addEventListener(API.USER_JOIN, checkNMod);
   	API.addEventListener(API.VOTE_UPDATE, function (obj) {
             	populateUserlist();
 
@@ -253,14 +241,14 @@ function displayUI() {
 function initUIListeners() {
 	$(".sidebar-handle").on("click", function() {
 		left = !left;
-		$(".sidebar#side-left").animate({"left": left ? "0px" : "-220px"}, 300, "easeOutCirc");
+		$(".sidebar#side-left").animate({"left": left ? "0px" : "-190px"}, 300, "easeOutCirc");
 		jaaulde.utils.cookies.set(COOKIE_LEFT, left);
 	});
 	$("#plug-btn-woot").on("click", function() {
 		autowoot = !autowoot;
 		$(this).css("color", autowoot ? "#3FFF00" : "#ED1C24");
 		if (autowoot) {
-			setTimeout("$('#button-vote-positive').click();", 7000);
+			$('#button-vote-positive').click();
 		}
 		jaaulde.utils.cookies.set(COOKIE_WOOT, autowoot);
 	});
@@ -449,7 +437,6 @@ function autoRespond(data) {
 
 function djAdvanced(obj) {
 	setTimeout("autoSkip();", 6000);
-	setTimeout("checkNotModding();", 2000);
 	if (hideVideo) {
 		$("#yt-frame").css("height", "0px");
 		$("#playback .frame-background").css("opacity", "0.0");
@@ -481,29 +468,29 @@ function populateUserlist() {
 		if (a[i].ambassador) {
 			a[i].permission = 50;
 		}
-        	str = '<span ';
+        	str = '<span class="chat-from-clickable ';
         	if (typeof (a[i].permission) !== 'undefined' && a[i].permission == 99) {
-            		str += 'class="chat-from-admin ';
+            		str += 'chat-from-admin ';
         	} else if (typeof (a[i].permission) !== 'undefined' && a[i].permission == 50) {
-            		str += 'class="chat-from-ambassador ';
+            		str += 'chat-from-ambassador ';
         	}
         	else if (typeof (a[i].permission) !== 'undefined' && a[i].permission == 5) {
-            		str += 'class="chat-from-host ';
+            		str += 'chat-from-host ';
         	}
         	else if (typeof (a[i].permission) !== 'undefined' && a[i].permission == 4) {
-            		str += 'class="chat-from-cohost ';
+            		str += 'chat-from-cohost ';
         	}
         	else if (typeof (a[i].permission) !== 'undefined' && a[i].permission == 3) {
-            		str += 'class="chat-from-manager ';
+            		str += 'chat-from-manager ';
         	}
         	else if (typeof (a[i].permission) !== 'undefined' && a[i].permission == 2) {
-            		str += 'class="chat-from-bouncer ';
+            		str += 'chat-from-bouncer ';
         	}
         	else if (typeof (a[i].permission) !== 'undefined' && a[i].permission == 1) {
-            		str += 'class="chat-from-featureddj ';
+            		str += 'chat-from-featureddj ';
         	}
         	if (a[i].id === myid) {
-            		str += 'class="chat-from-you ';
+            		str += 'chat-from-you ';
         	}
         	str += '" onclick="$(\'#chat-input-field\').val($(\'#chat-input-field\').val() + \'@' + a[i].username + ' \').focus();" title="click to mention">' + a[i].username + '</span>';
         	if (typeof (a[i].vote) !== 'undefined' && a[i].vote == -1) {
@@ -541,7 +528,7 @@ function populateUserlist() {
         var waitlistDiv = $('<h3 title="waitlist posisition"></h3>').addClass('waitlistspot').text('waitlist: ' + (spot !== null ? spot + ' / ' : '') + Models.room.data.waitList.length);
         var waitpostime = Models.room.getWaitListPosition() * 240;
         var offset = API.getMedia().duration - 240;
-        var approxtime = waitpostime + offset - predictPassed;
+        var approxtime = waitpostime + offset;
         var timeDiv = $('<h3 title="approx. wait time until on the booth"</h3>').addClass('timewait').text('wait: ' + (spot !== null ? sts(decodeURIComponent(approxtime)) + ' ' : ''));
         $('#side-left .sidebar-content2').append(waitlistDiv);
         $('#side-left .sidebar-content2').append(spot !== null ? timeDiv : '');
@@ -558,20 +545,17 @@ function sts(secs) {
 	var nohrs = Math.floor((secs % 86400) / 3600);
 	var nomins = Math.floor(((secs % 86400) % 3600) / 60);
 	if (nohrs > 0) {
-		if (nomins > 9) {
+		if (nomins >9) {
 			return nohrs + ":" + nomins
 		} else {
 			return nohrs + ":0" + nomins
 		}
 	} else {
-		if (nomins > 9) {
+		if (nomins > 1) {
 			return nomins + " mins"
-		} else {
-			return "0" + nomins + " mins"
 		}
 	}
 }
-
 
 function checkMentioned() {
 	if(timePassed >= timeToWait) {
@@ -614,501 +598,6 @@ function checkPredict() {
 	}
 	else {
 		predictPassed = predictPassed + 1;
-	}
-}
-
-function checkModding(user) {
-	if (hostling.indexOf(user.id) > -1) {
-		hostlingInRoom = false;
-		modding();
-	}
-}
-
-function checkNotModding() {
-	if (hostling.indexOf(Models.room.getUserByID("50e4f10ec3b97a3ce3aa6579").id) > -1) {
-		hostlingInRoom = true;
-		modding();
-	}
-}
-
-function checkNMod(user) {
-	if (hostling.indexOf(user.id) > -1) {
-		hostlingInRoom = true;
-		modding();
-	}
-}
-
-function modding() {
-	if (hostlingInRoom == true) {
-		autoSkip = function(data) {
-			return data;
-		}
-		roomSkip = function(obj) {
-			return obj;
-		}
-		checkBlacklist = function(user) {
-			return user;
-		}
-		chatListener = function() {
-			var strobeOnCommand, Command, User, apiHooks, chatCommandDispatcher, cmds, data, hook, initHooks, initialize, populateUserData, settings, undoHooks, unhook,
-		    	__bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-		    	__indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-		    	__hasProp = {}.hasOwnProperty,
-		    	__extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-		  	settings = (function() {
-		    		function settings() {
-		      			this.getRoomUrlPath = __bind(this.getRoomUrlPath, this);
-		      			this.startup = __bind(this.startup, this);
-				}
-		    		settings.prototype.users = {};
-		    		settings.prototype.roomUrlPath = null;
-		    		settings.prototype.launchTime = null;
-		    		settings.prototype.startup = function() {
-		      		this.launchTime = new Date();
-		      		return this.roomUrlPath = this.getRoomUrlPath();
-		    		};
-		    		settings.prototype.getRoomUrlPath = function() {
-		      			return window.location.pathname.replace(/\//g, '');
-		    		};
-		    		return settings;
-		  	})();
-		  	data = new settings();
-		  	User = (function() {
-
-		    		function User(user) {
-		      			this.user = user;
-		      			this.getIsDj = __bind(this.getIsDj, this);
-		     			this.getUser = __bind(this.getUser, this);
-		    		}
-		    		User.prototype.getUser = function() {
-		      			return this.user;
-		    		};
-		    		User.prototype.getIsDj = function() {
-		      			var DJs, dj, _i, _len;
-		      			DJs = API.getDJs();
-		      			for (_i = 0, _len = DJs.length; _i < _len; _i++) {
-						dj = DJs[_i];
-						if (this.user.id === dj.id) {
-			  				return true;
-						}
-		      			}
-		      			return false;
-		    		};
-		    		return User;
-			})(); 
-		  	populateUserData = function() {
-		    		var u, users, _i, _len;
-		    		users = API.getUsers();
-		    		for (_i = 0, _len = users.length; _i < _len; _i++) {
-		      			u = users[_i];
-		      			data.users[u.id] = new User(u);
-		    		}
-		  	};
-		  	initialize = function() {
-		    		populateUserData();
-		    		initHooks();
-		    		data.startup();
-		  	};
-		  	Command = (function() {
-		    		function Command(msgData) {
-		      			this.msgData = msgData;
-		      			this.init();
-		    		}
-		    		Command.prototype.init = function() {
-		      			this.parseType = null;
-		      			this.command = null;
-		      			return this.rankPrivelege = null;
-		    		};
-		    		Command.prototype.functionality = function(data) {};
-		    		Command.prototype.hasPrivelege = function() {
-		      			var user;
-		     			user = data.users[this.msgData.fromID].getUser();
-		     			switch (this.rankPrivelege) {
-						case 'host':
-			  				return user.permission === 5;
-						case 'cohost':
-			  				return user.permission >= 4;
-						case 'mod':
-			  				return user.permission >= 3;
-						case 'manager':
-			  				return user.permission >= 3;
-						case 'bouncer':
-			  				return user.permission >= 2;
-						case 'featured':
-			  				return user.permission >= 1;
-						default:
-			  				return true;
-		      			}
-		    		};
-		    		Command.prototype.commandMatch = function() {
-		      			var command, msg, _i, _len, _ref;
-		      			msg = this.msgData.message;
-		      			if (typeof this.command === 'string') {
-						if (this.parseType === 'exact') {
-			  				if (msg === this.command) {
-			    					return true;
-			  				} else {
-			    					return false;
-			  				}
-						} else if (this.parseType === 'startsWith') {
-			  				if (msg.substr(0, this.command.length) === this.command) {
-			    					return true;
-			  				} else {
-			    					return false;
-			  				}
-						} else if (this.parseType === 'contains') {
-			  				if (msg.indexOf(this.command) !== -1) {
-			    					return true;
-			  				} else {
-			    					return false;
-			  				}
-						}
-		      			} else if (typeof this.command === 'object') {
-						_ref = this.command;
-						for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-			  				command = _ref[_i];
-			  				if (this.parseType === 'exact') {
-			    					if (msg === command) {
-			      						return true;
-			    					}
-			  				} else if (this.parseType === 'startsWith') {
-			    					if (msg.substr(0, command.length) === command) {
-			      						return true;
-			    					}
-			  				} else if (this.parseType === 'contains') {
-			    					if (msg.indexOf(command) !== -1) {
-			      						return true;
-			    					}
-			  				}
-						}
-						return false;
-		      			}
-		    		};
-		    		Command.prototype.evalMsg = function() {
-		      			if (this.commandMatch() && this.hasPrivelege()) {
-						this.functionality();
-						return true;
-		      			} else {
-						return false;
-		      			}
-		    		};
-		    		return Command;
-		  	})();
-		  	strobeOnCommand = (function(_super) { 
-		    		__extends(strobeOnCommand, _super);
-		    		function strobeOnCommand() {
-					return strobeOnCommand.__super__.constructor.apply(this, arguments);
-		    		}
-		    		strobeOnCommand.prototype.init = function() {
-					this.command = '/strobe on';
-					this.parseType = 'exact';
-					return this.rankPrivelege = 'cohost';
-		    		};
-		    		strobeOnCommand.prototype.functionality = function() {
-		      			return RoomUser.audience.strobeMode(true);
-		    		}
-		    		return strobeOnCommand;
-		  	})(Command);
-		  	cmds = [strobeOnCommand];
-		  	chatCommandDispatcher = function(chat) {
-		    		var c, cmd, _i, _len, _results;
-		    		_results = [];
-		    		for (_i = 0, _len = cmds.length; _i < _len; _i++) {
-		      			cmd = cmds[_i];
-		      			c = new cmd(chat);
-		      			if (c.evalMsg()) {
-						break;
-		      			} else {
-						_results.push(void 0);
-		      			}
-		    		}
-		    		return _results;
-		  	};
-		  	hook = function(apiEvent, callback) {
-		    		return API.addEventListener(apiEvent, callback);
-		  	};
-		  	unhook = function(apiEvent, callback) {
-		    		return API.removeEventListener(apiEvent, callback);
-		  	};
-		  	apiHooks = [
-		    		{
-		      			'event': API.CHAT,
-		      			'callback': chatCommandDispatcher
-		    		}
-		  	];
-		  	initHooks = function() {
-		    		var pair, _i, _len, _results;
-		    		_results = [];
-		    		for (_i = 0, _len = apiHooks.length; _i < _len; _i++) {
-		      			pair = apiHooks[_i];
-		      			_results.push(hook(pair['event'], pair['callback']));
-		    		}
-		    		return _results;
-		  		};
-		  	undoHooks = function() {
-		    		var pair, _i, _len, _results;
-		   		 _results = [];
-		    		for (_i = 0, _len = apiHooks.length; _i < _len; _i++) {
-		      			pair = apiHooks[_i];
-		      			_results.push(unhook(pair['event'], pair['callback']));
-		    		}
-		    		return _results;
-		  	};
-		  	initialize();
-		}
-	}
-	if (hostlingInRoom == false) {
-		autoSkip = function(data) {
-			if (overPlayed.indexOf(Models.room.data.media.id) > -1) {
-				API.sendChat("/me auto skip activated! song overplayed");
-				setTimeout("new RoomPropsService(document.location.href.split('/')[3],true,true,1,5);", 250);
-				setTimeout("new ModerationForceSkipService;", 500);
-				setTimeout("new RoomPropsService(document.location.href.split('/')[3],false,true,1,5);", 750);
-			}
-			if (Models.room.data.media.duration > 481) {
-				API.sendChat("/me auto skip activated! song exceeds 8 minutes long");
-				setTimeout("new RoomPropsService(document.location.href.split('/')[3],true,true,1,5);", 250);
-				setTimeout("new ModerationForceSkipService;", 500);
-				setTimeout("new RoomPropsService(document.location.href.split('/')[3],false,true,1,5);", 750);
-			}
-		}
-		roomSkip = function(obj) {
-			var tv = Models.room.roomScore.negative + Models.room.roomScore.positive;
-			var tvp = Models.room.roomScore.negative / tv;
-			if(tvp >= 20 && tv >= 45) {
- 				new ModerationForceSkipService;
- 				API.sendChat("room voted to skip!");
-			}
-		}
-		checkBlacklist = function(user) {
-			if (blacklist.indexOf(user.id) > -1 ) {
-				API.sendChat("/me blacklisted user detected!");
-                		API.moderateBanUser(user.id, "Blacklisted User. banned for 30 days");
-        		}
-		}
-		chatListener = function() {
-			var antispam, strobeOnCommand, Command, User, apiHooks, chatCommandDispatcher, chatUniversals, cmds, data, hook, initHooks, initialize, populateUserData, settings, undoHooks, unhook,
-		    	__bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-		    	__indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-		    	__hasProp = {}.hasOwnProperty,
-		    	__extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-		  	settings = (function() {
-		    		function settings() {
-		      			this.getRoomUrlPath = __bind(this.getRoomUrlPath, this);
-		      			this.startup = __bind(this.startup, this);
-				}
-		    		settings.prototype.users = {};
-		    		settings.prototype.roomUrlPath = null;
-		    		settings.prototype.launchTime = null;
-		    		settings.prototype.startup = function() {
-		      		this.launchTime = new Date();
-		      		return this.roomUrlPath = this.getRoomUrlPath();
-		    		};
-		    		settings.prototype.getRoomUrlPath = function() {
-		      			return window.location.pathname.replace(/\//g, '');
-		    		};
-		    		return settings;
-		  	})();
-		  	data = new settings();
-		  	User = (function() {
-
-		    		function User(user) {
-		      			this.user = user;
-		      			this.getIsDj = __bind(this.getIsDj, this);
-		     			this.getUser = __bind(this.getUser, this);
-		    		}
-		    		User.prototype.getUser = function() {
-		      			return this.user;
-		    		};
-		    		User.prototype.getIsDj = function() {
-		      			var DJs, dj, _i, _len;
-		      			DJs = API.getDJs();
-		      			for (_i = 0, _len = DJs.length; _i < _len; _i++) {
-						dj = DJs[_i];
-						if (this.user.id === dj.id) {
-			  				return true;
-						}
-		      			}
-		      			return false;
-		    		};
-		    		return User;
-			})(); 
-		  	populateUserData = function() {
-		    		var u, users, _i, _len;
-		    		users = API.getUsers();
-		    		for (_i = 0, _len = users.length; _i < _len; _i++) {
-		      			u = users[_i];
-		      			data.users[u.id] = new User(u);
-		    		}
-		  	};
-		  	initialize = function() {
-		    		populateUserData();
-		    		initHooks();
-		    		data.startup();
-		  	};
-		  	Command = (function() {
-		    		function Command(msgData) {
-		      			this.msgData = msgData;
-		      			this.init();
-		    		}
-		    		Command.prototype.init = function() {
-		      			this.parseType = null;
-		      			this.command = null;
-		      			return this.rankPrivelege = null;
-		    		};
-		    		Command.prototype.functionality = function(data) {};
-		    		Command.prototype.hasPrivelege = function() {
-		      			var user;
-		     			user = data.users[this.msgData.fromID].getUser();
-		     			switch (this.rankPrivelege) {
-						case 'host':
-			  				return user.permission === 5;
-						case 'cohost':
-			  				return user.permission >= 4;
-						case 'mod':
-			  				return user.permission >= 3;
-						case 'manager':
-			  				return user.permission >= 3;
-						case 'bouncer':
-			  				return user.permission >= 2;
-						case 'featured':
-			  				return user.permission >= 1;
-						default:
-			  				return true;
-		      			}
-		    		};
-		    		Command.prototype.commandMatch = function() {
-		      			var command, msg, _i, _len, _ref;
-		      			msg = this.msgData.message;
-		      			if (typeof this.command === 'string') {
-						if (this.parseType === 'exact') {
-			  				if (msg === this.command) {
-			    					return true;
-			  				} else {
-			    					return false;
-			  				}
-						} else if (this.parseType === 'startsWith') {
-			  				if (msg.substr(0, this.command.length) === this.command) {
-			    					return true;
-			  				} else {
-			    					return false;
-			  				}
-						} else if (this.parseType === 'contains') {
-			  				if (msg.indexOf(this.command) !== -1) {
-			    					return true;
-			  				} else {
-			    					return false;
-			  				}
-						}
-		      			} else if (typeof this.command === 'object') {
-						_ref = this.command;
-						for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-			  				command = _ref[_i];
-			  				if (this.parseType === 'exact') {
-			    					if (msg === command) {
-			      						return true;
-			    					}
-			  				} else if (this.parseType === 'startsWith') {
-			    					if (msg.substr(0, command.length) === command) {
-			      						return true;
-			    					}
-			  				} else if (this.parseType === 'contains') {
-			    					if (msg.indexOf(command) !== -1) {
-			      						return true;
-			    					}
-			  				}
-						}
-						return false;
-		      			}
-		    		};
-		    		Command.prototype.evalMsg = function() {
-		      			if (this.commandMatch() && this.hasPrivelege()) {
-						this.functionality();
-						return true;
-		      			} else {
-						return false;
-		      			}
-		    		};
-		    		return Command;
-		  	})();
-		  	strobeOnCommand = (function(_super) { 
-		    		__extends(strobeOnCommand, _super);
-		    		function strobeOnCommand() {
-					return strobeOnCommand.__super__.constructor.apply(this, arguments);
-		    		}
-		    		strobeOnCommand.prototype.init = function() {
-					this.command = '/strobe on';
-					this.parseType = 'exact';
-					return this.rankPrivelege = 'cohost';
-		    		};
-		    		strobeOnCommand.prototype.functionality = function() {
-		      			return RoomUser.audience.strobeMode(true);
-		    		}
-		    		return strobeOnCommand;
-		  	})(Command);
-		  	cmds = [strobeOnCommand];
-		  	chatCommandDispatcher = function(chat) {
-		    		var c, cmd, _i, _len, _results;
-		    		chatUniversals(chat);
-		    		_results = [];
-		    		for (_i = 0, _len = cmds.length; _i < _len; _i++) {
-		      			cmd = cmds[_i];
-		      			c = new cmd(chat);
-		      			if (c.evalMsg()) {
-						break;
-		      			} else {
-						_results.push(void 0);
-		      			}
-		    		}
-		    		return _results;
-		  	};
-		  	antispam = function(chat) {
-		  		var plugRoomLinkPatt, sender;
-		  		plugRoomLinkPatt = /(\bhttps?:\/\/(www.)?adf\.ly[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-		  		if (plugRoomLinkPatt.exec(chat.message)) {
-		    			sender = API.getUser(chat.fromID);
-		    			if (!sender.ambassador && !sender.moderator && !sender.owner && !sender.superuser) {
-		    				API.sendChat("@" + sender.username + " " + spamMsg[Math.floor(Math.random() * spamMsg.length)]);
-		       				return API.moderateDeleteChat(chat.chatID);
-		     			}
-		   		}
-		   		return antispam;
-		 	};
-		  	chatUniversals = function(chat) {
-		      		antispam(chat);
-		  	};
-		  	hook = function(apiEvent, callback) {
-		    		return API.addEventListener(apiEvent, callback);
-		  	};
-		  	unhook = function(apiEvent, callback) {
-		    		return API.removeEventListener(apiEvent, callback);
-		  	};
-		  	apiHooks = [
-		    		{
-		      			'event': API.CHAT,
-		      			'callback': chatCommandDispatcher
-		    		}
-		  	];
-		  	initHooks = function() {
-		    		var pair, _i, _len, _results;
-		    		_results = [];
-		    		for (_i = 0, _len = apiHooks.length; _i < _len; _i++) {
-		      			pair = apiHooks[_i];
-		      			_results.push(hook(pair['event'], pair['callback']));
-		    		}
-		    		return _results;
-		  		};
-		  	undoHooks = function() {
-		    		var pair, _i, _len, _results;
-		   		 _results = [];
-		    		for (_i = 0, _len = apiHooks.length; _i < _len; _i++) {
-		      			pair = apiHooks[_i];
-		      			_results.push(unhook(pair['event'], pair['callback']));
-		    		}
-		    		return _results;
-		  	};
-		  	initialize();
-		}
 	}
 }
 
@@ -1265,7 +754,7 @@ function chatListener() {
     		strobeOnCommand.prototype.init = function() {
         		this.command = '/strobe on';
         		this.parseType = 'exact';
-        		return this.rankPrivelege = 'cohost';
+        		return this.rankPrivelege = 'manager';
     		};
     		strobeOnCommand.prototype.functionality = function() {
       			return RoomUser.audience.strobeMode(true);
@@ -1338,11 +827,11 @@ function chatListener() {
 
 delay();
 $('#plugbot-js').remove();
-log("Also, welcome to Dubstep, Techno, and Electro custom script, coded by Nitro Ghost. Version: 4.1.4");
+log("Also, welcome to ★Anime Games Music★, coded by Nitro Ghost. Version: 4.1.4");
 log("type '/commands' to see extra commands");
-$('body').prepend('<script type="text/javascript" id="overplayedlist-js" src="https://raw.github.com/NitroGhost/DTE/master/autoskip.js" />');
-$('body').prepend('<script type="text/javascript" id="blacklist-js" src="https://raw.github.com/NitroGhost/DTE/master/blacklist.js" />');
-$('body').prepend('<script type="text/javascript" id="modcommands-js" src="https://raw.github.com/NitroGhost/DTE/master/modcommands.js" />');
+$('body').prepend('<script type="text/javascript" id="autoskip-js" src="https://raw.github.com/Snipeglider/Plug/master/autoskip.js" />');
+$('body').prepend('<script type="text/javascript" id="blacklist-js" src="https://raw.github.com/Snipeglider/Plug/master/blacklist.js" />');
+$('body').prepend('<script type="text/javascript" id="modcommands-js" src="https://raw.github.com/Snipeglider/Plug/master/modcommands.js" />');
 $('body').prepend('<style type="text/css" id="plug-css">' + "\n" + styles.join("\n") + "\n" + '</style>');
 $('body').append('</div><div id="side-right" class="sidebar">' + '<div class="sidebar-handle"><span>|||</span></div>' + '<div class="sidebar-content"></div>' + '<div id="hr-div"><div><div id="hr-style"></div></div></div>' + '</div><div id="side-left" class="sidebar">' + '<div class="sidebar-handle" title="show/hide userlist"><span>|||</span></div>' + '<div class="sidebar-content2"></div>' + '<div id="hr2-div2"><div><div id="hr2-style2"></div></div></div>' + '</div>');
 $('body').append('<script type="text/javascript" id="plug-js-extra">' + "\n" + scripts.join("\n") + "\n" + '</script>');
