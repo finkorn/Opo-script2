@@ -151,6 +151,7 @@ var styles = [
             '.sidebar-content2 {position: absolute;width: 185px;height: 100%; overflow: auto}',
             '.sidebar-content2 h3 {font-weight: bold; padding-left: 5px; padding-bottom: 5px; margin: 0;}',
             '.sidebar-content2 a {font-weight: bold; font-size: 13px; padding-left: 5px;}',
+            'html{background: url(http://i.imgur.com/05Nso7J.jpg) no-repeat scroll center top #000000;}',
             '#side-right .sidebar-handle {float: left;}',
             '#side-left .sidebar-handle {float: right;}',
             '#side-right a {display: block;min-width: 100%;cursor: pointer;padding: 4px 5px 8px 5px;border-radius: 4px;font-size: 13px;}',
@@ -163,7 +164,7 @@ var styles = [
             '.chat-manager {background: url(http://i.imgur.com/hqqhTcp.png) no-repeat 0 5px;padding-left: 17px;width: 292px;}',
             '.chat-cohost {background: url(http://i.imgur.com/njajqVG.png) no-repeat 0 5px;padding-left: 17px;width:292px;}',
             '.chat-host {background: url(http://i.imgur.com/njajqVG.png) no-repeat 0 5px;padding-left: 17px;width: 292px;}',
-            '#dj-console, #dj-console {background-image: url(http://i.imgur.com/gqdMdaz.gif);min-height:33px;min-width:131px;}',
+            '#dj-console, #dj-console {background-image: url(http://i.imgur.com/SzjUPtj.gif);min-height:33px;min-width:131px;}',
             '.chat-from-you {color: #0099FF;font-weight: bold;margin-top: 0px; padding-top: 0px;}',
             '.chat-from-featureddj {color: rgb(255, 0, 135); font-weight: bold; margin-top: 0px; padding-top: 0px;}',
             '.chat-from-bouncer {color: rgb(199, 0, 199); font-weight: bold; margin-top: 0px; padding-top: 0px;}',
@@ -375,7 +376,7 @@ function initUIListeners() {
 			}
 		}
 	});
-	$("#plug-btn-Přeskočit").on("click", function() {
+	$("#plug-btn-skip").on("click", function() {
 		if (skipped == false) {
 			skipped = true;
 			skipTimer = setInterval("checkSkipped();", 500);
